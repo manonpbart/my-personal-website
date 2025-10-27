@@ -5,6 +5,37 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout title="Projects">
     <div class="content-section">
         <h2>Projects</h2>
-        <p>Your projects content here...</p>
+        
+        <div class="projects-scroll">
+            <!-- Pixel Art Converter Project -->
+            <a href="/apps/pixel-art-converter.html" class="project-item project-link">
+                <div class="project-icon">🎨</div>
+                <h3>Pixel Art Converter</h3>
+                <!-- LOCAL APP badge - gray box to show it's instantly usable -->
+                <div class="local-app-badge">LOCAL APP</div>
+                <!-- Description text explaining what it does -->
+                <p class="project-description">
+                    Transform any image into retro pixel art with customizable sizes and color palettes!
+                </p>
+            </a>
+
+            <!-- Placeholder Project 1 -->
+            <div class="project-item">
+                <div class="project-icon">📦</div>
+                <h3>Placeholder Project 1</h3>
+                <p class="project-description">
+                    Coming soon! This will be your next amazing project.
+                </p>
+            </div>
+
+            <!-- Placeholder Project 2 -->
+            <div class="project-item">
+                <div class="project-icon">📦</div>
+                <h3>Placeholder Project 2</h3>
+                <p class="project-description">
+                    Coming soon! This will be another cool project.
+                </p>
+            </div>
+        </div>
     </div>
 </BaseLayout>

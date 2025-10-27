@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Art Converter ✨</title>
+    <style>
+        /* CSS controls how everything looks! */
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Courier New', monospace; /* Retro gaming font */
+            background: linear-gradient(135deg, #c8e6c9 0%, #7cb342 100%); /* Pastel green gradient */
+            color: #2d5016;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border: 4px solid #7cb342; /* Green border to match theme */
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Back button styling */
+        .back-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(200, 230, 201, 0.3);
+            border: 2px solid #7cb342;
+            border-radius: 8px;
+            color: #2d5016;
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(200, 230, 201, 0.6);
+            transform: translateX(-3px); /* Slides left on hover */
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #2d5016;
+            text-shadow: 2px 2px 0px rgba(124, 179, 66, 0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            opacity: 0.8;
+            margin-bottom: 30px;
+            color: #2d5016;
+        }
+
+        /* Fixed: Controls now wrap properly and don't stretch too wide */
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two columns: upload and pixel size */
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .control-group {
+            /* No more flex: 1 that was making boxes too wide */
+        }
+        
+        /* Color palette always takes full width on its own row */
+        .control-group.palette-row {
+            grid-column: 1 / -1; /* Spans both columns */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+            color: #2d5016;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            background: rgba(200, 230, 201, 0.3);
+            border: 2px solid #7cb342;
+            border-radius: 8px;
+            color: #2d5016;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em; /* Matches the file picker text size */
+            height: 42px; /* Fixed height for consistency */
+        }
+
+        select, button {
+            width: 100%;
+            padding: 10px; /* Same padding as file input */
+            background: rgba(200, 230, 201, 0.3);
+            border: 2px solid #7cb342;
+            border-radius: 8px;
+            color: #2d5016;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em; /* Smaller text to match file input */
+            cursor: pointer;
+            transition: all 0.3s ease; /* Smooth hover effects */
+            height: 42px; /* Same fixed height as file input */
+        }
+
+        button:hover, select:hover {
+            background: rgba(200, 230, 201, 0.6);
+            transform: translateY(-2px); /* Lifts button on hover */
+        }
+
+        button:active {
+            transform: translateY(0); /* Button press effect */
+        }
+
+        .canvas-container {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .canvas-wrapper {
+            text-align: center;
+        }
+
+        canvas {
+            border: 3px solid #7cb342;
+            border-radius: 10px;
+            background: white;
+            /* image-rendering makes pixels stay crispy when scaled up */
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .canvas-label {
+            margin-top: 10px;
+            font-size: 0.9em;
+            opacity: 0.8;
+            color: #2d5016;
+        }
+
+        /* Color palette preview circles */
+        .palette-grid {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .palette-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid #7cb342;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .palette-option:hover {
+            transform: scale(1.1);
+        }
+
+        .palette-option.selected {
+            border-color: #2d5016;
+            box-shadow: 0 0 15px rgba(45, 80, 22, 0.5);
+        }
+        
+        /* Checkbox styling */
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #7cb342; /* Makes checkbox green to match theme */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Back button to return home -->
+        <a href="/projects" class="back-button">← Back to Projects</a>
+        
+        <h1>🎮 Pixel Art Converter ✨</h1>
+        <p class="subtitle">Turn any image into retro pixel art! Works best with simple drawings.</p>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>📁 Upload Image</label>
+                <input type="file" id="imageInput" accept="image/*">
+            </div>
+
+            <div class="control-group">
+                <label>🎯 Pixel Size</label>
+                <select id="pixelSize">
+                    <option value="8">8x8 - Super Retro</option>
+                    <option value="16">16x16 - Ultra Retro</option>
+                    <option value="32" selected>32x32 - Classic</option>
+                    <option value="64">64x64 - Detailed</option>
+                </select>
+            </div>
+            
+            <div class="control-group palette-row">
+                <label>🎨 Color Palette</label>
+                <div class="palette-grid">
+                    <div class="palette-option selected" data-palette="green" style="background: linear-gradient(135deg, #a8d5a3, #6ba860);"></div>
+                    <div class="palette-option" data-palette="blue" style="background: linear-gradient(135deg, #a8d8ff, #6ba3d8);"></div>
+                    <div class="palette-option" data-palette="orange" style="background: linear-gradient(135deg, #ffd4a3, #ffb366);"></div>
+                    <div class="palette-option" data-palette="pink" style="background: linear-gradient(135deg, #ffb3d9, #ff80bf);"></div>
+                    <div class="palette-option" data-palette="purple" style="background: linear-gradient(135deg, #d4a5ff, #b380ff);"></div>
+                </div>
+            </div>
+            
+            <div class="control-group palette-row">
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                    <input type="checkbox" id="focusToggle" checked>
+                    <span>🎯 Emphasize Sharp Edges</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <div class="canvas-wrapper">
+                <div class="canvas-label">Original</div>
+                <canvas id="originalCanvas"></canvas>
+            </div>
+            <div class="canvas-wrapper">
+                <div class="canvas-label">Pixelated </div>
+                <canvas id="pixelCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript makes everything interactive!
+        
+        // Grab references to our HTML elements (like connecting wires)
+        const imageInput = document.getElementById('imageInput');
+        const pixelSizeSelect = document.getElementById('pixelSize');
+        const originalCanvas = document.getElementById('originalCanvas');
+        const pixelCanvas = document.getElementById('pixelCanvas');
+        const paletteOptions = document.querySelectorAll('.palette-option');
+        const focusToggle = document.getElementById('focusToggle');
+        
+        // ctx = context, this is where we "draw" on the canvas
+        const originalCtx = originalCanvas.getContext('2d');
+        const pixelCtx = pixelCanvas.getContext('2d');
+        
+        let currentImage = null;
+        let selectedPalette = 'green'; // Default palette
+
+        // Color palettes - each has 8 shades from dark to light (monochrome)
+        const palettes = {
+            green: ['#2d5016', '#4a7c2e', '#6ba860', '#8bc985', '#a8d5a3', '#c3e3bf', '#ddf0db', '#f1f8f4'],
+            blue: ['#1a3d5c', '#2d5a7f', '#4077a3', '#5394c6', '#a8d8ff', '#bae1ff', '#cceaff', '#def3ff'],
+            orange: ['#663300', '#994d00', '#cc6600', '#ff8000', '#ffb366', '#ffc788', '#ffdcaa', '#fff0cc'],
+            pink: ['#660033', '#99004d', '#cc0066', '#ff0080', '#ff80bf', '#ffa3d1', '#ffc7e3', '#ffebf5'],
+            purple: ['#330066', '#4d0099', '#6600cc', '#8000ff', '#b380ff', '#c7a3ff', '#dbc7ff', '#efebff']
+        };
+
+        // Listen for palette clicks
+        paletteOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove 'selected' from all options
+                paletteOptions.forEach(opt => opt.classList.remove('selected'));
+                // Add 'selected' to clicked option
+                option.classList.add('selected');
+                selectedPalette = option.dataset.palette;
+                
+                // If there's an image, reprocess it with new palette
+                if (currentImage) {
+                    processImage(currentImage);
+                }
+            });
+        });
+
+        // When user uploads a file, this triggers
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader(); // Reads the file data
+                reader.onload = (event) => {
+                    const img = new Image(); // Creates an image object
+                    img.onload = () => {
+                        currentImage = img;
+                        processImage(img);
+                    };
+                    img.src = event.target.result; // Sets image source to uploaded file
+                };
+                reader.readAsDataURL(file); // Converts file to usable format
+            }
+        });
+
+        // When pixel size changes, reprocess image
+        pixelSizeSelect.addEventListener('change', () => {
+            if (currentImage) {
+                processImage(currentImage);
+            }
+        });
+        
+        // When focus toggle changes, reprocess image
+        focusToggle.addEventListener('change', () => {
+            if (currentImage) {
+                processImage(currentImage);
+            }
+        });
+
+        function processImage(img) {
+            const pixelSize = parseInt(pixelSizeSelect.value);
+            
+            // Set original canvas size
+            originalCanvas.width = 300;
+            originalCanvas.height = 300;
+            
+            // Draw original image (scaled to fit)
+            const scale = Math.min(300 / img.width, 300 / img.height);
+            const width = img.width * scale;
+            const height = img.height * scale;
+            const x = (300 - width) / 2;
+            const y = (300 - height) / 2;
+            
+            originalCtx.fillStyle = 'white';
+            originalCtx.fillRect(0, 0, 300, 300);
+            originalCtx.drawImage(img, x, y, width, height);
+            
+            // PIXELATION MAGIC HAPPENS HERE! ✨
+            pixelateImage(img, pixelSize);
+        }
+
+        function pixelateImage(img, pixelSize) {
+            // Step 1: Draw image TINY (this naturally pixelates it)
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCanvas.width = pixelSize;
+            tempCanvas.height = pixelSize;
+            
+            // Draw the image super small - this averages out pixels
+            tempCtx.drawImage(img, 0, 0, pixelSize, pixelSize);
+            
+            // Step 2: Get all the pixel data
+            const imageData = tempCtx.getImageData(0, 0, pixelSize, pixelSize);
+            const data = imageData.data; // Array of [R, G, B, A, R, G, B, A, ...]
+            
+            // Step 2.5 - Edge Detection (Sobel operator for sharp outlines!)
+            // Convert to grayscale first for edge detection
+            const grayData = [];
+            for (let i = 0; i < data.length; i += 4) {
+                const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+                grayData.push(gray);
+            }
+            
+            // Sobel operator - detects edges by finding gradients (sharp changes)
+            const edges = [];
+            for (let y = 0; y < pixelSize; y++) {
+                for (let x = 0; x < pixelSize; x++) {
+                    const idx = y * pixelSize + x;
+                    
+                    // Get surrounding pixels (handling edges)
+                    const getGray = (dx, dy) => {
+                        const nx = Math.max(0, Math.min(pixelSize - 1, x + dx));
+                        const ny = Math.max(0, Math.min(pixelSize - 1, y + dy));
+                        return grayData[ny * pixelSize + nx];
+                    };
+                    
+                    // Sobel X (horizontal edge detection)
+                    const gx = -getGray(-1, -1) + getGray(1, -1) +
+                              -2 * getGray(-1, 0) + 2 * getGray(1, 0) +
+                              -getGray(-1, 1) + getGray(1, 1);
+                    
+                    // Sobel Y (vertical edge detection)
+                    const gy = -getGray(-1, -1) - 2 * getGray(0, -1) - getGray(1, -1) +
+                               getGray(-1, 1) + 2 * getGray(0, 1) + getGray(1, 1);
+                    
+                    // Edge magnitude (strength of the edge)
+                    const edgeMagnitude = Math.sqrt(gx * gx + gy * gy);
+                    edges.push(edgeMagnitude);
+                }
+            }
+            
+            // Normalize edges to 0-1 range
+            const maxEdge = Math.max(...edges);
+            const normalizedEdges = edges.map(e => e / maxEdge);
+            
+            // Step 3: Apply monochrome color quantization with edge enhancement
+            const useFocus = focusToggle.checked;
+            
+            for (let i = 0; i < data.length; i += 4) {
+                const pixelIdx = Math.floor(i / 4);
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                
+                // Convert to grayscale (luminosity method - most accurate)
+                let gray = 0.299 * r + 0.587 * g + 0.114 * b;
+                
+                // Edge enhancement: darken pixels on sharp edges (outlines)
+                const edgeStrength = normalizedEdges[pixelIdx];
+                
+                if (useFocus) {
+                    // Focus mode: ONLY emphasize the sharpest edges
+                    // Ignore weak edges, make strong edges really dark
+                    if (edgeStrength > 0.3) { // Only strong edges
+                        gray = gray * (1 - edgeStrength * 0.9); // More intense darkening
+                    }
+                } else {
+                    // Normal mode: gentle edge enhancement
+                    gray = gray * (1 - edgeStrength * 0.5);
+                }
+                
+                // Map grayscale to our palette (0-255 → 0-7 colors)
+                const paletteIndex = Math.floor((gray / 255) * (palettes[selectedPalette].length - 1));
+                const color = hexToRgb(palettes[selectedPalette][paletteIndex]);
+                
+                // Replace pixel with palette color
+                data[i] = color.r;
+                data[i + 1] = color.g;
+                data[i + 2] = color.b;
+                // data[i + 3] is alpha (transparency), we keep it as is
+            }
+            
+            tempCtx.putImageData(imageData, 0, 0);
+            
+            // Step 4: Scale up to display size (this keeps it pixelated)
+            pixelCanvas.width = 300;
+            pixelCanvas.height = 300;
+            pixelCtx.imageSmoothingEnabled = false; // CRITICAL: keeps pixels crispy!
+            pixelCtx.fillStyle = 'white';
+            pixelCtx.fillRect(0, 0, 300, 300);
+            
+            // Draw the tiny pixelated image BIG
+            const scale = 300 / pixelSize;
+            const displaySize = pixelSize * scale;
+            const offsetX = (300 - displaySize) / 2;
+            const offsetY = (300 - displaySize) / 2;
+            
+            pixelCtx.drawImage(tempCanvas, offsetX, offsetY, displaySize, displaySize);
+        }
+
+        // Helper function: convert hex color to RGB values
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : { r: 0, g: 0, b: 0 };
+        }
+    </script>
+</body>
+</html>
