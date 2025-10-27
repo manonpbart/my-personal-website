@@ -5,6 +5,38 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout title="About Me">
     <div class="content-section">
         <h2>about_me</h2>
-        <p>Your about content here...</p>
+        
+        <!-- Add your image here -->
+        <div class="about-image">
+            <img src="/manon-photo.png">
+        </div>
+        
+        <p>Hello everyone, this is Manon. Encapsulated here is a little bit of my favorite things: my research, my fun code projects, and my personal hobbies in travelling, math, science and the arts.</p>
+        
+        <p>I grew up in the beautiful state of Louisiana, where I studied chemical engineering and physics at Louisiana State University and then completed my doctorate in theoretical physics at Tulane University in 2025. My PhD involved studying classical and quantum optical communications and computing. During my studies, I used AI to deploy, refine and improve these optical technologies. I also worked at NASA Goddard in D.C. during this time.</p>
+        
+        <p>Since graduating, I have been based in Paris, working on several personal projects which you will find here. Beyond Paris, I have lived in New Orleans, Baton Rouge, and Shanghai.</p>
+        
+        <p>I hope you stay for a little while! And feel free to connect with me on LinkedIn, Github or through my email!</p>
     </div>
 </BaseLayout>
+
+<style>
+    /* Image styling */
+    .about-image {
+        text-align: center;
+        margin: 2rem 0; /* Gap above and below image */
+    }
+    
+    .about-image img {
+        max-width: 300px;
+        border-radius: 10px; /* Rounded corners */
+        border: 4px solid var(--border-pixel);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    /* Paragraph spacing - creates gaps between paragraphs */
+    .content-section p {
+        margin-bottom: 1.5rem; /* Gap after each paragraph */
+    }
+</style>

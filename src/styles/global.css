@@ -216,7 +216,5 @@ footer h2 {
     max-width: 1000px;
     margin: 0 auto;
     padding: 2rem;
-    background: white;
-    border: 4px solid var(--accent-blue);
     margin-bottom: 2rem;
 }

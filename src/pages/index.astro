@@ -7,8 +7,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="retro-screen">
         <div class="terminal-text">
             <h1>Hello World<span class="cursor"></span></h1>
-            <p>Welcome to Manon's personal website</p>
+            <p id="typing-text"></p>
         </div>
+
+        <script>
+            // Typing effect - runs when page loads
+            const text = "Welcome to Manon's personal webpage, where you can stay up to date with fun projects and research!";
+            const typingElement = document.getElementById('typing-text');
+            let index = 0;
+
+            function typeWriter() {
+                if (index < text.length) {
+                    // Add one character at a time
+                    typingElement.textContent += text.charAt(index);
+                    index++;
+                    // setTimeout controls typing speed (100ms between letters)
+                    setTimeout(typeWriter, 80);
+                }
+            }
+
+            // Start typing after a short delay
+            setTimeout(typeWriter, 500);
+        </script>
     </div>
 
     <!-- Recent Projects -->
