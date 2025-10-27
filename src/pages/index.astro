@@ -17,7 +17,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             let index = 0;
 
             function typeWriter() {
-                if (index < text.length) {
+                if (typingElement && index < text.length) {
                     // Add one character at a time
                     typingElement.textContent += text.charAt(index);
                     index++;
@@ -27,7 +27,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             }
 
             // Start typing after a short delay
-            setTimeout(typeWriter, 500);
+            if (typingElement) {
+                setTimeout(typeWriter, 500);
+            }
         </script>
     </div>
 
