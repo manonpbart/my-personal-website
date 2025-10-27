@@ -1,16 +1,43 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Home - My Portfolio">
+    <!-- Retro screen -->
+    <div class="retro-screen">
+        <div class="terminal-text">
+            <h1>Hello World<span class="cursor"></span></h1>
+            <p>Welcome to Manon's personal website</p>
+        </div>
+    </div>
+
+    <!-- Recent Projects -->
+    <h2>recent_projects</h2>
+    <div class="projects-scroll">
+        <div class="project-item">
+            <div class="project-icon">🎮</div>
+            <h3>Game Engine</h3>
+        </div>
+        <div class="project-item">
+            <div class="project-icon">🧩</div>
+            <h3>Puzzle Solver</h3>
+        </div>
+        <div class="project-item">
+            <div class="project-icon">🤖</div>
+            <h3>AI Assistant</h3>
+        </div>
+    </div>
+
+    <!-- Recent Research -->
+    <h2>recent_research</h2>
+    <div class="projects-scroll">
+        <div class="project-item">
+            <div class="project-icon">🔬</div>
+            <h3>Study Alpha</h3>
+        </div>
+        <div class="project-item">
+            <div class="project-icon">📚</div>
+            <h3>Research Beta</h3>
+        </div>
+    </div>
+</BaseLayout>

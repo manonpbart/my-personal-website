@@ -1,0 +1,222 @@
+/* CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Variables - pastel colors for a soft retro computer feel */
+:root {
+    --bg-screen: #c8e6c9; /* Pastel green */
+    --bg-light: #f1f8f4; /* Very light green/white */
+    --accent-blue: #b3d9ff; /* Pastel blue */
+    --text-terminal: #2d5016; /* Dark green for terminal text */
+    --border-pixel: #7cb342; /* Slightly darker green for borders */
+}
+
+body {
+    /* Monospace font = terminal/code look */
+    font-family: 'Courier New', Courier, monospace;
+    background: var(--bg-light);
+    color: var(--text-terminal);
+    line-height: 1.6;
+}
+
+/* Navigation - simple and clean */
+nav {
+    background: var(--bg-screen);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 4px solid var(--border-pixel);
+    box-shadow: 0 2px 0 var(--border-pixel);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: var(--text-terminal);
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+nav a::before {
+    content: '[ ';
+}
+
+nav a::after {
+    content: ' ]';
+}
+
+nav a:hover {
+    color: var(--border-pixel);
+    transform: scale(1.05);
+}
+
+/* Retro computer screen effect */
+.retro-screen {
+    display: grid;
+    place-items: center;
+    min-height: 70vh;
+    background: var(--bg-screen);
+    border: 8px solid var(--border-pixel);
+    box-shadow: 
+        inset 0 0 20px rgba(0,0,0,0.1),
+        0 4px 0 var(--border-pixel);
+    margin: 2rem;
+    padding: 3rem;
+    position: relative;
+}
+
+/* Pixelated corners decoration */
+.retro-screen::before,
+.retro-screen::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--border-pixel);
+}
+
+.retro-screen::before {
+    top: 10px;
+    left: 10px;
+}
+
+.retro-screen::after {
+    bottom: 10px;
+    right: 10px;
+}
+
+.terminal-text {
+    text-align: center;
+}
+
+.terminal-text h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+}
+
+.terminal-text p {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+}
+
+/* Blinking cursor effect using CSS animation */
+.cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: var(--text-terminal);
+    animation: blink 1s infinite;
+    margin-left: 5px;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Section headers with terminal style */
+h2 {
+    font-size: 1.8rem;
+    margin: 3rem 2rem 1.5rem 2rem;
+    color: var(--text-terminal);
+}
+
+h2::before {
+    content: '> ';
+    color: var(--border-pixel);
+}
+
+/* Horizontal scrolling container for projects */
+.projects-scroll {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    padding: 2rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-pixel) var(--bg-light);
+}
+
+/* Individual project card */
+.project-item {
+    flex-shrink: 0;
+    width: 200px;
+    background: white;
+    border: 4px solid var(--border-pixel);
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.project-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 0 var(--border-pixel);
+}
+
+/* Project icon - using emoji as placeholder */
+.project-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    user-select: none;
+}
+
+.project-item h3 {
+    font-size: 1.1rem;
+    color: var(--text-terminal);
+}
+
+/* Footer with social icons */
+footer {
+    background: var(--bg-screen);
+    padding: 3rem 2rem;
+    margin-top: 4rem;
+    text-align: center;
+    border-top: 4px solid var(--border-pixel);
+}
+
+footer h2 {
+    margin: 0 0 1.5rem 0;
+}
+
+/* Container for social icons */
+.social-icons {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Individual social icon link */
+.social-icons a {
+    font-size: 2.5rem;
+    color: var(--text-terminal);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-icons a:hover {
+    color: var(--border-pixel);
+    transform: scale(1.2);
+}
+
+/* Styling for other content sections */
+.content-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border: 4px solid var(--accent-blue);
+    margin-bottom: 2rem;
+}

@@ -1,0 +1,57 @@
+---
+interface Props {
+    title?: string;
+}
+
+const { title = "My Portfolio" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+    <link rel="stylesheet" href="/src/styles/global.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">home</a></li>
+            <li><a href="/about">about</a></li>
+            <li><a href="/research">research</a></li>
+            <li><a href="/projects">projects</a></li>
+            <li><a href="/puzzle">puzzle</a></li>
+            <li><a href="/game">game</a></li>
+        </ul>
+    </nav>
+
+    <slot />
+
+    <footer>
+        <h2>get_in_touch</h2>
+        <div class="social-icons">
+            <a href="https://linkedin.com/in/yourprofile" title="LinkedIn">💼</a>
+            <a href="https://github.com/yourusername" title="GitHub">🐙</a>
+            <a href="mailto:your.email@example.com" title="Email">📧</a>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('nav a').forEach((link) => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ 
+                            behavior: 'smooth' 
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
