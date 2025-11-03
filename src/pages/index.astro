@@ -1,5 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+// 🎮 Learning: Import constants so homepage stays updated automatically!
+import { PROJECTS, RESEARCH_PROJECTS } from '../utils/projectConstants.js';
+
+// Get recent items (for now just get all items, but you could sort by date later)
+const recentProjects = Object.values(PROJECTS).slice(-3); // Last 3 projects
+const recentResearch = Object.values(RESEARCH_PROJECTS).slice(-3); // Last 3 research
 ---
 
 <BaseLayout title="Home - My Portfolio">
@@ -33,39 +39,44 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </script>
     </div>
 
-    <!-- Recent Projects -->
+    <!-- Recent Projects - now dynamic! -->
     <h2>recent_projects</h2>
-	
+    
     <div class="projects-scroll">
-        <!-- Link to the Pixel Art Converter app -->
-        <a href="/apps/pixel-art-converter.html" class="project-item">
-            <div class="project-icon">🎨</div>
-            <h3>Pixel Art Converter</h3>
-        </a>
-        <!-- Link to projects page for Placeholder Project 1 -->
-        <a href="/projects" class="project-item">
-            <div class="project-icon">📦</div>
-            <h3>Placeholder Project 1</h3>
-        </a>
-        <!-- Link to projects page for Placeholder Project 2 -->
-        <a href="/projects" class="project-item">
-            <div class="project-icon">📦</div>
-            <h3>Placeholder Project 2</h3>
-        </a>
+        {recentProjects.map(project => (
+            <!-- 🎮 Learning: This checks if project has a URL vs needs to go to projects page -->
+            <a href={project.url || '/projects'} class="project-item">
+                <div class="project-icon">{project.icon}</div>
+                <h3>{project.name}</h3>
+            </a>
+        ))}
+        
+        <!-- 🎮 Learning: If no projects yet, show placeholder -->
+        {recentProjects.length === 0 && (
+            <div class="project-item">
+                <div class="project-icon">📦</div>
+                <h3>No projects yet</h3>
+            </div>
+        )}
     </div>
 
-    <!-- Recent Research -->
+    <!-- Recent Research - now dynamic! -->
     <h2>recent_research</h2>
     <div class="projects-scroll">
-        <!-- Link to research page for Placeholder Research 1 -->
-        <a href="/research" class="project-item">
-            <div class="project-icon">🔬</div>
-            <h3>Placeholder Research 1</h3>
-        </a>
-        <!-- Link to research page for Placeholder Research 2 -->
-        <a href="/research" class="project-item">
-            <div class="project-icon">🔬</div>
-            <h3>Placeholder Research 2</h3>
-        </a>
+        {recentResearch.map(research => (
+            <!-- 🎮 Learning: Use the slug field for consistent URLs -->
+            <a href={`/research/${research.slug}`} class="project-item">
+                <div class="project-icon">{research.icon}</div>
+                <h3>{research.name}</h3>
+            </a>
+        ))}
+        
+        <!-- 🎮 Learning: If no research yet, show placeholder -->
+        {recentResearch.length === 0 && (
+            <div class="project-item">
+                <div class="project-icon">🔬</div>
+                <h3>No research yet</h3>
+            </div>
+        )}
     </div>
 </BaseLayout>

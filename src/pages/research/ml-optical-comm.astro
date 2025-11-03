@@ -1,0 +1,359 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { RESEARCH_PROJECTS, createTagBadges } from '../../utils/projectConstants.js';
+
+const project = RESEARCH_PROJECTS.ML_OPTICAL_COMM;
+---
+
+<BaseLayout title={project.name}>
+    <div class="content-section">
+        <!-- Back button -->
+        <div class="back-nav">
+            <a href="/research" class="back-link">← Back to Research</a>
+        </div>
+        
+        <!-- Project header -->
+        <div class="project-header">
+            <div class="project-icon-large">{project.icon}</div>
+            <h1>Machine Learning for Higher Order Optical Spatial Modes in Turbulence</h1>
+            <div class="project-tags" set:html={createTagBadges(project.tags)}></div>
+        </div>
+
+        <!-- Project links (paper, GitHub) -->
+        <div class="project-links">
+            <a href="https://doi.org/10.1364/OL.551297" class="project-link github-link" target="_blank">
+                Read Paper (Optics Letters)
+            </a>
+            <a href="https://github.com/manonpbart/Machine-Learning-for-Optical-Communication" class="project-link github-link" target="_blank">
+                View Code
+            </a>
+        </div>
+
+        <!-- Project description -->
+        <div class="project-content">
+            <h2>Overview</h2>
+            <p class="project-description-detailed">
+                This project uses machine learning to aid in turbulence affected optical communication and networks. 
+                The code includes simulation in Python for generating higher order Ince, Hermite, and Laguerre Gaussian modes, 
+                adding turbulence effects, modeling propagation, and using both generative and classifying neural networks 
+                for mode denoising and classification.
+            </p>
+            
+            <!-- Key Features -->
+            <div class="features-section">
+                <h2>Key Features</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h3>Beam Generation</h3>
+                        <p>Generate higher order Ince, Hermite, and Laguerre Gaussian modes</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Turbulence Modeling</h3>
+                        <p>Add atmospheric turbulence using Kolmogorov/Von Kármán models</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Propagation</h3>
+                        <p>Model beam propagation using Angular Spectrum Method</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>ML Models</h3>
+                        <p>Generative autoencoders for denoising and CNNs for classification</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Beam Types -->
+            <div class="beam-types-section">
+                <h2>Optical Spatial Modes</h2>
+                <div class="beam-examples">
+                    <div class="beam-example">
+                        <h3>Laguerre-Gaussian (LG)</h3>
+                        <p>Circular symmetry with orbital angular momentum</p>
+                        <img src="/research/ml-optical-comm/lg-example.png" alt="LG beam example" class="beam-image">
+                    </div>
+                    <div class="beam-example">
+                        <h3>Hermite-Gaussian (HG)</h3>
+                        <p>Rectangular symmetry in Cartesian coordinates</p>
+                        <img src="/research/ml-optical-comm/hg-example.png" alt="HG beam example" class="beam-image">
+                    </div>
+                    <div class="beam-example">
+                        <h3>Ince-Gaussian (IG)</h3>
+                        <p>Elliptical coordinates, interpolates between HG and LG</p>
+                        <img src="/research/ml-optical-comm/ig-example.png" alt="IG beam example" class="beam-image">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Architecture -->
+            <div class="figures-section">
+                <h2>Model Architecture</h2>
+                <div class="architecture-figure">
+                    <img src="/research/ml-optical-comm/figure2.png" alt="Model Architecture" class="model-diagram">
+                    <p class="figure-caption">
+                        Convolutional autoencoder architecture for denoising turbulence-affected spatial modes. 
+                        Read more details in the <a href="https://doi.org/10.1364/OL.551297" target="_blank">paper</a>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="results-section">
+                <h2>Results</h2>
+                <div class="results-grid">
+                    <div class="result-item">
+                        <h3>Turbulence Effects</h3>
+                        <img src="/research/ml-optical-comm/turbulence-comparison.png" alt="Turbulence effects" class="result-image">
+                        <p>Comparison of beam profiles with varying turbulence strength (Cn²)</p>
+                    </div>
+                    <div class="result-item">
+                        <h3>Denoising Performance</h3>
+                        <img src="/research/ml-optical-comm/denoising-results.png" alt="Denoising results" class="result-image">
+                        <p>Convolutional autoencoder successfully reconstructs clean beam profiles from turbulence-degraded inputs</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Usage Example -->
+            <div class="usage-section">
+                <h2>Quick Usage</h2>
+                <div class="code-example">
+                    <pre><code># Install and import
+pip install git+https://github.com/manonpbart/Machine-Learning-for-Optical-Communication.git
+import beam_simulation as bs
+
+# Configure simulation
+bs.Config(wavelength=795e-9, size_x=400, size_y=400, pixel_size=8e-6, w0=0.35e-3)
+
+# Generate different beam types
+E_lg = bs.lg(p=2, l=1)        # Laguerre-Gaussian
+E_hg = bs.hg(n=2, m=3)        # Hermite-Gaussian  
+E_ig = bs.ig(p=4, m=2, beam="e", elliptic_param=2)  # Ince-Gaussian
+
+# Add turbulence and propagate
+phi_turb = bs.turbulence(Cn2=38e-12, l_max=25, l_min=1e-3)
+E_turb = E_lg * np.exp(1j * phi_turb)
+E_prop = bs.propagation(E_turb, z=20e-2)</code></pre>
+                </div>
+            </div>
+
+            <!-- Citation -->
+            <div class="citation-section">
+                <h2>Citation</h2>
+                <div class="citation-box">
+                    <p><strong>Paper:</strong> "Classification of single photons in higher-order spatial modes via convolutional neural networks"</p>
+                    <p><strong>Authors:</strong> Manon P. Bart, Sita Dawanse, Nicholas J. Savino, Viet Tran, Tianhong Wang, Sanjaya Lohani, Farris Nefissi, Pascal Bassène, Moussa N'Gom, and Ryan T. Glasser</p>
+                    <p><strong>Journal:</strong> Optics Letters, Vol. 50, Issue 9, pp. 2820-2823 (2025)</p>
+                    <p><strong>DOI:</strong> <a href="https://doi.org/10.1364/OL.551297" target="_blank">10.1364/OL.551297</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</BaseLayout>
+
+<style>
+    .back-nav {
+        margin-bottom: 2rem;
+    }
+    
+    .back-link {
+        color: var(--text-terminal);
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        background: var(--bg-screen);
+        border: 2px solid var(--border-pixel);
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+    
+    .back-link:hover {
+        background: var(--border-pixel);
+        color: white;
+    }
+    
+    .project-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 2rem;
+        background: var(--bg-screen);
+        border: 4px solid var(--border-pixel);
+        border-radius: 8px;
+    }
+    
+    .project-icon-large {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+    
+    .project-header h1 {
+        font-size: 2.2rem;
+        margin: 1rem 0;
+        color: var(--text-terminal);
+    }
+    
+    .project-tags {
+        margin: 1rem 0;
+    }
+    
+    .project-links {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
+    
+    .project-link {
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        border: 3px solid;
+    }
+    
+    .github-link {
+        background: var(--border-pixel);
+        color: white;
+        border-color: var(--border-pixel);
+    }
+    
+    .project-link:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 0 var(--text-terminal);
+    }
+    
+    .project-content {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .project-content h2 {
+        margin: 3rem 0 1rem 0;
+        color: var(--text-terminal);
+        border-bottom: 2px solid var(--border-pixel);
+        padding-bottom: 0.5rem;
+        font-size: 1.8rem;
+    }
+    
+    .project-description-detailed {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+    }
+    
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+    
+    .feature-item {
+        background: var(--bg-light);
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 2px dashed var(--border-pixel);
+        text-align: center;
+    }
+    
+    .feature-item h3 {
+        margin: 0 0 1rem 0;
+        color: var(--text-terminal);
+    }
+    
+    .beam-examples {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+    
+    .beam-example {
+        text-align: center;
+        background: var(--bg-light);
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 2px solid var(--border-pixel);
+    }
+    
+    .beam-image, .result-image {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 4px;
+        margin: 1rem 0;
+    }
+    
+    .architecture-figure {
+        text-align: center;
+        margin: 2rem 0;
+    }
+    
+    .model-diagram {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        border: 2px solid var(--border-pixel);
+        border-radius: 8px;
+    }
+    
+    .figure-caption {
+        margin-top: 1rem;
+        font-style: italic;
+        color: var(--text-terminal);
+        opacity: 0.8;
+    }
+    
+    .results-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+    
+    .result-item {
+        background: var(--bg-light);
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 2px solid var(--border-pixel);
+        text-align: center;
+    }
+    
+    .code-example {
+        background: var(--text-terminal);
+        color: var(--bg-light);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        overflow-x: auto;
+    }
+    
+    .code-example pre {
+        margin: 0;
+        white-space: pre-wrap;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9rem;
+    }
+    
+    .citation-box {
+        background: var(--bg-screen);
+        padding: 2rem;
+        border-radius: 8px;
+        border: 2px solid var(--border-pixel);
+        margin: 2rem 0;
+    }
+    
+    .citation-box p {
+        margin: 0.5rem 0;
+    }
+    
+    .citation-box a {
+        color: var(--border-pixel);
+        text-decoration: none;
+    }
+    
+    .citation-box a:hover {
+        text-decoration: underline;
+    }
+</style>

@@ -1,0 +1,444 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { RESEARCH_PROJECTS, createTagBadges } from '../../utils/projectConstants.js';
+
+const project = RESEARCH_PROJECTS.OPTICAL_NEURAL_NETWORKS;
+---
+
+<BaseLayout title={project.name}>
+    <div class="content-section">
+        <!-- Back button -->
+        <div class="back-nav">
+            <a href="/research" class="back-link">← Back to Research</a>
+        </div>
+        
+        <!-- Project header -->
+        <div class="project-header">
+            <div class="project-icon-large">{project.icon}</div>
+            <h1>Efficient Optical Neural Network Training</h1>
+            <div class="project-tags" set:html={createTagBadges(project.tags)}></div>
+        </div>
+
+        <!-- Project links (paper, GitHub) -->
+        <div class="project-links">
+            <a href="https://arxiv.org/abs/2506.20833" class="project-link github-link" target="_blank">
+                Read Paper (arXiv)
+            </a>
+            <a href="https://github.com/manonpbart/Efficient-Optical-Neural-Network-Training" class="project-link github-link" target="_blank">
+                View Code
+            </a>
+        </div>
+
+        <!-- Project description -->
+        <div class="project-content">
+            <h2>Overview</h2>
+            <p class="project-description-detailed">
+                This project introduces a novel optics-informed backpropagation algorithm that uses <strong>Fourier decomposition</strong> 
+                to dramatically improve training efficiency for diffractive optical neural networks. By leveraging the physics of 
+                optical propagation, we achieve faster convergence and more stable training for cascaded phase mask architectures.
+            </p>
+            
+            <!-- Key Innovation -->
+            <div class="innovation-section">
+                <h2>Key Innovation: Fourier-Based Training</h2>
+                <div class="innovation-grid">
+                    <div class="innovation-item">
+                        <h3>Traditional Training</h3>
+                        <p>Standard backpropagation through optical layers requires expensive matrix operations and often suffers from vanishing gradients in deep optical architectures.</p>
+                    </div>
+                    <div class="innovation-item">
+                        <h3>Our Approach</h3>
+                        <p>Fourier decomposition-based gradients exploit the angular spectrum method, enabling efficient training of phase masks with improved stability and convergence.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Architecture -->
+            <div class="architecture-section">
+                <h2>Optical Neural Network Architecture</h2>
+                <div class="architecture-figure">
+                    <img src="/research/optical-neural-networks/architecture.png" alt="ONN Architecture" class="model-diagram">
+                    <p class="figure-caption">
+                        Cascaded phase mask architecture where blue represents light amplitude/phase and red represents 
+                        trainable phase masks (SLMs). The goal is to optimize phase masks for machine learning inference tasks.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Key Features -->
+            <div class="features-section">
+                <h2>Key Features</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h3>Fourier-Based Gradients</h3>
+                        <p>Novel gradient calculation using Fourier decomposition for efficient backpropagation</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Stable Training</h3>
+                        <p>Gradient normalization, learning rate decay, and auxiliary stabilization functions</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Flexible Architecture</h3>
+                        <p>Adjustable number of phase masks and optical propagation distances</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Linear Transformations</h3>
+                        <p>Generate arbitrary optical linear transformations between field-of-views</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Training Algorithm -->
+            <div class="algorithm-section">
+                <h2>Training Algorithm</h2>
+                <div class="algorithm-content">
+                    <div class="algorithm-description">
+                        <h3>Fourier-Decomposition Backpropagation</h3>
+                        <p>The training algorithm leverages the angular spectrum method for optical propagation:</p>
+                        <img src="/research/optical-neural-networks/angular-spectrum.png" alt="Angular Spectrum Method" class="equation-image">
+                        <p>Gradient calculations are performed using Fourier transforms:</p>
+                        <img src="/research/optical-neural-networks/gradient-calculation.png" alt="Gradient Calculation" class="equation-image">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="results-section">
+                <h2>Results & Visualizations</h2>
+                <div class="results-grid">
+                    <div class="result-item">
+                        <h3>Training Progress</h3>
+                        <img src="/research/optical-neural-networks/training-progress.png" alt="Training progress" class="result-image">
+                        <p>Loss and accuracy curves showing efficient convergence with our Fourier-based algorithm</p>
+                    </div>
+                    <div class="result-item">
+                        <h3>MNIST Classification</h3>
+                        <img src="/research/optical-neural-networks/mnist-results.png" alt="MNIST classification" class="result-image">
+                        <p>Input images, target outputs, and detector region responses for digit classification</p>
+                    </div>
+                    <div class="result-item">
+                        <h3>Confusion Matrix</h3>
+                        <img src="/research/optical-neural-networks/confusion-matrix.png" alt="Confusion matrix" class="result-image">
+                        <p>Classification performance across all digit classes</p>
+                    </div>
+                    <div class="result-item">
+                        <h3>Linear Transformations</h3>
+                        <img src="/research/optical-neural-networks/linear-transforms.png" alt="Linear transformations" class="result-image">
+                        <p>Examples of arbitrary optical linear transformations between field-of-views</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Usage Example -->
+            <div class="usage-section">
+                <h2>Quick Usage</h2>
+                <div class="code-example">
+                    <pre><code># Create training dataset
+C = CreateImages(n_imag=1000, n_img_test=200, size_image=64, 
+                 digits=[0,1,2,3,4,5,6,7,8,9], padding=8, detector_scale=1)
+x, y, y_label, x_test, y_test, y_l_test = C.process()
+
+# Visualize data
+C.plotimage(x, y, y_label)
+defined_grids = C.return_grids()
+
+# Create and train ONN
+ONNd = ONN_Class_Det(size=64, n_L=3, sub_grids=defined_grids, 
+                     wavelength=632e-9, z=0.1, pixel_size=8e-6)
+
+# Train with Fourier-based algorithm                     
+loss, acc, phase_masks, gradients = ONNd.train(x, y_label, 
+                                               epochs=100, batch_size=32, 
+                                               learning_rate=0.001)
+
+# Visualize results
+ONNd.plot_la(loss, acc)
+ONNd.plot_cm(x_test, y_l_test)</code></pre>
+                </div>
+            </div>
+
+            <!-- Applications -->
+            <div class="applications-section">
+                <h2>Applications</h2>
+                <div class="applications-grid">
+                    <div class="app-item">
+                        <h3>🔢 Digit Classification</h3>
+                        <p>MNIST and Fashion-MNIST classification with optical processing</p>
+                    </div>
+                    <div class="app-item">
+                        <h3>🔄 Optical Computing</h3>
+                        <p>Arbitrary linear transformations for optical signal processing</p>
+                    </div>
+                    <div class="app-item">
+                        <h3>⚡ Real-time Inference</h3>
+                        <p>Hardware-efficient optical neural networks for edge computing</p>
+                    </div>
+                    <div class="app-item">
+                        <h3>🚀 Scalable Architecture</h3>
+                        <p>Efficient training enables deeper and more complex optical networks</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Citation -->
+            <div class="citation-section">
+                <h2>Citation</h2>
+                <div class="citation-box">
+                    <p><strong>Paper:</strong> "Efficient Training for Optical Computing"</p>
+                    <p><strong>Authors:</strong> Manon P. Bart, Nick Sparks, and Ryan T. Glasser</p>
+                    <p><strong>Preprint:</strong> arXiv:2506.20833 (2025)</p>
+                    <p><strong>URL:</strong> <a href="https://arxiv.org/abs/2506.20833" target="_blank">https://arxiv.org/abs/2506.20833</a></p>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</BaseLayout>
+
+<style>
+    .back-nav {
+        margin-bottom: 2rem;
+    }
+    
+    .back-link {
+        color: var(--text-terminal);
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        background: var(--bg-screen);
+        border: 2px solid var(--border-pixel);
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+    
+    .back-link:hover {
+        background: var(--border-pixel);
+        color: white;
+    }
+    
+    .project-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 2rem;
+        background: var(--bg-screen);
+        border: 4px solid var(--border-pixel);
+        border-radius: 8px;
+    }
+    
+    .project-icon-large {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+    
+    .project-header h1 {
+        font-size: 2.2rem;
+        margin: 1rem 0;
+        color: var(--text-terminal);
+    }
+    
+    .project-tags {
+        margin: 1rem 0;
+    }
+    
+    .project-links {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
+    
+    .project-link {
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        border: 3px solid;
+    }
+    
+    .github-link {
+        background: var(--border-pixel);
+        color: white;
+        border-color: var(--border-pixel);
+    }
+    
+    .project-link:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 0 var(--text-terminal);
+    }
+    
+    .project-content {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .project-content h2 {
+        margin: 3rem 0 1rem 0;
+        color: var(--text-terminal);
+        border-bottom: 2px solid var(--border-pixel);
+        padding-bottom: 0.5rem;
+        font-size: 1.8rem;
+    }
+    
+    .project-description-detailed {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+    }
+    
+    .innovation-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+    
+    .innovation-item {
+        background: var(--bg-light);
+        padding: 2rem;
+        border-radius: 8px;
+        border: 2px solid var(--border-pixel);
+    }
+    
+    .innovation-item h3 {
+        margin: 0 0 1rem 0;
+        color: var(--text-terminal);
+        font-size: 1.3rem;
+    }
+    
+    .architecture-figure, .algorithm-content {
+        text-align: center;
+        margin: 2rem 0;
+    }
+    
+    .model-diagram, .equation-image {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        border: 2px solid var(--border-pixel);
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
+    
+    .figure-caption {
+        margin-top: 1rem;
+        font-style: italic;
+        color: var(--text-terminal);
+        opacity: 0.8;
+    }
+    
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+    
+    .feature-item {
+        background: var(--bg-light);
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 2px dashed var(--border-pixel);
+        text-align: center;
+    }
+    
+    .feature-item h3 {
+        margin: 0 0 1rem 0;
+        color: var(--text-terminal);
+    }
+    
+    .results-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+    
+    .result-item {
+        background: var(--bg-light);
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 2px solid var(--border-pixel);
+        text-align: center;
+    }
+    
+    .result-image {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        border-radius: 4px;
+        margin: 1rem 0;
+    }
+    
+    .code-example {
+        background: var(--text-terminal);
+        color: var(--bg-light);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        overflow-x: auto;
+    }
+    
+    .code-example pre {
+        margin: 0;
+        white-space: pre-wrap;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9rem;
+    }
+    
+    .applications-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+    
+    .app-item {
+        background: var(--bg-screen);
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 2px solid var(--border-pixel);
+        text-align: center;
+    }
+    
+    .app-item h3 {
+        margin: 0 0 1rem 0;
+        color: var(--text-terminal);
+    }
+    
+    .citation-box {
+        background: var(--bg-screen);
+        padding: 2rem;
+        border-radius: 8px;
+        border: 2px solid var(--border-pixel);
+        margin: 2rem 0;
+    }
+    
+    .citation-box p {
+        margin: 0.5rem 0;
+    }
+    
+    .citation-box a {
+        color: var(--border-pixel);
+        text-decoration: none;
+    }
+    
+    .citation-box a:hover {
+        text-decoration: underline;
+    }
+    
+    .future-item {
+        background: var(--accent-blue);
+        padding: 2rem;
+        border-radius: 8px;
+        border: 2px solid var(--border-pixel);
+        margin: 2rem 0;
+    }
+    
+    .future-item h3 {
+        margin: 0 0 1rem 0;
+        color: var(--text-terminal);
+    }
+</style>

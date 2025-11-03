@@ -1,41 +1,34 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+// Learning: Now projects and research use the same constants!
+import { PROJECTS, createTagBadges } from '../utils/projectConstants.js';
 ---
 
 <BaseLayout title="Projects">
     <div class="content-section">
         <h2>Projects</h2>
+        <p>This page is dedicated to fun personal projects! Some more useful than others...</p>
         
         <div class="projects-scroll">
-            <!-- Pixel Art Converter Project -->
-            <a href="/apps/pixel-art-converter.html" class="project-item project-link">
-                <div class="project-icon">🎨</div>
-                <h3>Pixel Art Converter</h3>
-                <!-- LOCAL APP badge - gray box to show it's instantly usable -->
-                <div class="local-app-badge">LOCAL APP</div>
-                <!-- Description text explaining what it does -->
+            <!-- Pixel Art Converter Project - now using constants! -->
+            <a href={PROJECTS.PIXEL_ART_CONVERTER.url} class="project-item project-link">
+                <div class="project-icon">{PROJECTS.PIXEL_ART_CONVERTER.icon}</div>
+                <h3>{PROJECTS.PIXEL_ART_CONVERTER.name}</h3>
+                
+                <!-- 🎮 Learning: Same tag system as research, but different styling -->
+                <div class="project-tags" set:html={createTagBadges(PROJECTS.PIXEL_ART_CONVERTER.tags)}></div>
+                
                 <p class="project-description">
-                    Transform any image into retro pixel art with customizable sizes and color palettes!
+                    {PROJECTS.PIXEL_ART_CONVERTER.description}
                 </p>
             </a>
-
-            <!-- Placeholder Project 1 -->
-            <div class="project-item">
-                <div class="project-icon">📦</div>
-                <h3>Placeholder Project 1</h3>
-                <p class="project-description">
-                    Coming soon! This will be your next amazing project.
-                </p>
-            </div>
-
-            <!-- Placeholder Project 2 -->
-            <div class="project-item">
-                <div class="project-icon">📦</div>
-                <h3>Placeholder Project 2</h3>
-                <p class="project-description">
-                    Coming soon! This will be another cool project.
-                </p>
-            </div>
         </div>
     </div>
 </BaseLayout>
+
+<style>
+    .project-tags {
+        margin: 0.5rem 0;
+        text-align: center;
+    }
+</style>
