@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-// 🎮 Learning: Import constants so homepage stays updated automatically!
 import { PROJECTS, RESEARCH_PROJECTS } from '../utils/projectConstants.js';
 
 // Get recent items (for now just get all items, but you could sort by date later)
@@ -46,7 +45,12 @@ const recentResearch = Object.values(RESEARCH_PROJECTS).slice(-3); // Last 3 res
         {recentProjects.map(project => (
             <!-- 🎮 Learning: This checks if project has a URL vs needs to go to projects page -->
             <a href={project.url || '/projects'} class="project-item">
-                <div class="project-icon">{project.icon}</div>
+                <!-- 🎮 Learning: Check if icon is image path or emoji -->
+                {project.icon.startsWith('/') ? (
+                    <img src={project.icon} alt={project.name} class="project-icon-img" />
+                ) : (
+                    <div class="project-icon">{project.icon}</div>
+                )}
                 <h3>{project.name}</h3>
             </a>
         ))}
@@ -66,7 +70,12 @@ const recentResearch = Object.values(RESEARCH_PROJECTS).slice(-3); // Last 3 res
         {recentResearch.map(research => (
             <!-- 🎮 Learning: Use the slug field for consistent URLs -->
             <a href={`/research/${research.slug}`} class="project-item">
-                <div class="project-icon">{research.icon}</div>
+                <!-- 🎮 Learning: Check if icon is image path or emoji -->
+                {research.icon.startsWith('/') ? (
+                    <img src={research.icon} alt={research.name} class="project-icon-img" />
+                ) : (
+                    <div class="project-icon">{research.icon}</div>
+                )}
                 <h3>{research.name}</h3>
             </a>
         ))}

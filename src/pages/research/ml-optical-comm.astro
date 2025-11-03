@@ -14,7 +14,12 @@ const project = RESEARCH_PROJECTS.ML_OPTICAL_COMM;
         
         <!-- Project header -->
         <div class="project-header">
-            <div class="project-icon-large">{project.icon}</div>
+            <!-- 🎮 Learning: Handle both images and emojis for project icons -->
+            {project.icon.startsWith('/') ? (
+                <img src={project.icon} alt={project.name} class="project-icon-large-img" />
+            ) : (
+                <div class="project-icon-large">{project.icon}</div>
+            )}
             <h1>Machine Learning for Higher Order Optical Spatial Modes in Turbulence</h1>
             <div class="project-tags" set:html={createTagBadges(project.tags)}></div>
         </div>
@@ -182,6 +187,16 @@ E_prop = bs.propagation(E_turb, z=20e-2)</code></pre>
     .project-icon-large {
         font-size: 4rem;
         margin-bottom: 1rem;
+    }
+    
+    /* 🎮 Learning: Large image version for project detail pages */
+    .project-icon-large-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        /* Removed border for cleaner look */
     }
     
     .project-header h1 {

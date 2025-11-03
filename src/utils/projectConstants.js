@@ -15,7 +15,7 @@ export const RESEARCH_PROJECTS = {
     ML_OPTICAL_COMM: {
         name: "ML for Optical Communication",
         slug: "ml-optical-comm",
-        icon: "🤖",
+        icon: "/icons/oam.png", 
         tags: [PROJECT_TAGS.MACHINE_LEARNING, PROJECT_TAGS.OPTICAL_COMMUNICATION],
         description: "Machine learning approaches for improving optical communication systems",
         paperUrl: "https://doi.org/10.1364/OL.551297",
@@ -24,7 +24,7 @@ export const RESEARCH_PROJECTS = {
     OPTICAL_NEURAL_NETWORKS: {
         name: "Efficient Optical Neural Network Training",
         slug: "optical-neural-networks",
-        icon: "🧠",
+        icon: "/icons/delta.png", // 🎮 Learning: Custom image for ONN project
         tags: [PROJECT_TAGS.MACHINE_LEARNING, PROJECT_TAGS.OPTICAL_NEURAL_NETWORKS],
         description: "Novel Fourier-based backpropagation algorithm for efficient training of diffractive neural network architectures",
         paperUrl: "https://arxiv.org/abs/2506.20833",
@@ -38,7 +38,7 @@ export const PROJECTS = {
     PIXEL_ART_CONVERTER: {
         name: "Pixel Art Converter",
         slug: "pixel-art-converter", // 🎮 Learning: URL slug for nested structure
-        icon: "🎨",
+        icon: "/icons/heart.png",
         tags: [PROJECT_TAGS.LOCAL_APP],
         description: "Transform any image into retro pixel art with customizable sizes and color palettes!",
         url: "/projects/pixel-art-converter" // 🎮 Learning: New nested URL structure

@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-// 🎮 Learning: Make research page dynamic like homepage
 import { RESEARCH_PROJECTS, createTagBadges } from '../utils/projectConstants.js';
 
 // Get all research projects dynamically
@@ -10,13 +9,18 @@ const researchProjects = Object.values(RESEARCH_PROJECTS);
 <BaseLayout title="Research">
     <div class="content-section">
         <h2>Research</h2>
-        <p>This page is dedicated to my research interests. Here you will find specific projects in optical communication, optical computing and neural networks, and quantum information processing. Most of these projects leveragee machine learning in some fashion. </p>
+        <p>This page is dedicated to my research interests. Here you will find specific projects in optical communication, optical computing and neural networks, and quantum information processing. Most of these projects leveragee machine learning in some fashion.</p>
         
         <div class="projects-scroll">
             {researchProjects.map(project => (
                 <!-- Dynamic research projects from constants -->
                 <a href={`/research/${project.slug}`} class="project-item project-link">
-                    <div class="project-icon">{project.icon}</div>
+                    <!-- 🎮 Learning: Check if icon is image path or emoji -->
+                    {project.icon.startsWith('/') ? (
+                        <img src={project.icon} alt={project.name} class="project-icon-img" />
+                    ) : (
+                        <div class="project-icon">{project.icon}</div>
+                    )}
                     <h3>{project.name}</h3>
                     
                     <!-- 🎮 Learning: Tags and description from constants -->
@@ -46,5 +50,15 @@ const researchProjects = Object.values(RESEARCH_PROJECTS);
     .project-tags {
         margin: 0.5rem 0;
         text-align: center;
+    }
+    
+    /* 🎮 Learning: Styling for custom project icon images */
+    .project-icon-img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        /* Removed border for cleaner look */
     }
 </style>

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-// Learning: Now projects and research use the same constants!
+// 🎮 Learning: Now projects and research use the same constants!
 import { PROJECTS, createTagBadges } from '../utils/projectConstants.js';
 ---
 
@@ -8,11 +8,16 @@ import { PROJECTS, createTagBadges } from '../utils/projectConstants.js';
     <div class="content-section">
         <h2>Projects</h2>
         <p>This page is dedicated to fun personal projects! Some more useful than others...</p>
-        
+       
         <div class="projects-scroll">
             <!-- Pixel Art Converter Project - now using constants! -->
             <a href={PROJECTS.PIXEL_ART_CONVERTER.url} class="project-item project-link">
-                <div class="project-icon">{PROJECTS.PIXEL_ART_CONVERTER.icon}</div>
+                <!-- 🎮 Learning: Check if icon is image path or emoji -->
+                {PROJECTS.PIXEL_ART_CONVERTER.icon.startsWith('/') ? (
+                    <img src={PROJECTS.PIXEL_ART_CONVERTER.icon} alt={PROJECTS.PIXEL_ART_CONVERTER.name} class="project-icon-img" />
+                ) : (
+                    <div class="project-icon">{PROJECTS.PIXEL_ART_CONVERTER.icon}</div>
+                )}
                 <h3>{PROJECTS.PIXEL_ART_CONVERTER.name}</h3>
                 
                 <!-- 🎮 Learning: Same tag system as research, but different styling -->
@@ -22,6 +27,24 @@ import { PROJECTS, createTagBadges } from '../utils/projectConstants.js';
                     {PROJECTS.PIXEL_ART_CONVERTER.description}
                 </p>
             </a>
+
+            <!-- Placeholder Project 1 -->
+            <div class="project-item">
+                <div class="project-icon">📦</div>
+                <h3>Placeholder Project 1</h3>
+                <p class="project-description">
+                    Coming soon! This will be your next amazing project.
+                </p>
+            </div>
+
+            <!-- Placeholder Project 2 -->
+            <div class="project-item">
+                <div class="project-icon">📦</div>
+                <h3>Placeholder Project 2</h3>
+                <p class="project-description">
+                    Coming soon! This will be another cool project.
+                </p>
+            </div>
         </div>
     </div>
 </BaseLayout>
@@ -30,5 +53,15 @@ import { PROJECTS, createTagBadges } from '../utils/projectConstants.js';
     .project-tags {
         margin: 0.5rem 0;
         text-align: center;
+    }
+    
+    /* 🎮 Learning: Styling for custom project icon images */
+    .project-icon-img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        /* Removed border for cleaner look */
     }
 </style>

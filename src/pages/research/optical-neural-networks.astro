@@ -14,7 +14,12 @@ const project = RESEARCH_PROJECTS.OPTICAL_NEURAL_NETWORKS;
         
         <!-- Project header -->
         <div class="project-header">
-            <div class="project-icon-large">{project.icon}</div>
+            <!-- 🎮 Learning: Handle both images and emojis for project icons -->
+            {project.icon.startsWith('/') ? (
+                <img src={project.icon} alt={project.name} class="project-icon-large-img" />
+            ) : (
+                <div class="project-icon-large">{project.icon}</div>
+            )}
             <h1>Efficient Optical Neural Network Training</h1>
             <div class="project-tags" set:html={createTagBadges(project.tags)}></div>
         </div>
@@ -191,7 +196,14 @@ ONNd.plot_cm(x_test, y_l_test)</code></pre>
                 </div>
             </div>
 
-
+            <!-- Future Work -->
+            <div class="future-section">
+                <h2>Upcoming Improvements</h2>
+                <div class="future-item">
+                    <h3>🔥 JAX Optimization</h3>
+                    <p>Code will soon be optimized using JAX for even faster training and GPU acceleration.</p>
+                </div>
+            </div>
         </div>
     </div>
 </BaseLayout>
@@ -228,6 +240,16 @@ ONNd.plot_cm(x_test, y_l_test)</code></pre>
     .project-icon-large {
         font-size: 4rem;
         margin-bottom: 1rem;
+    }
+    
+    /* 🎮 Learning: Large image version for project detail pages */
+    .project-icon-large-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        /* Removed border for cleaner look */
     }
     
     .project-header h1 {
