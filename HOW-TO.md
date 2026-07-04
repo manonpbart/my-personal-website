@@ -1,7 +1,7 @@
-# How this website works 🔦
+# How this website works 
 
 A quick reference for future you. Everything content-related lives in ONE file:
-`src/utils/projectConstants.js`. You almost never need to touch anything else.
+`src/utils/projectConstants.js`. 
 
 ---
 
@@ -45,7 +45,7 @@ the top of that file — change `--moss` there and the whole site follows.
 
 ---
 
-## 2. Adding a news item ✍️ (30 seconds)
+## 2. Adding a news item
 
 Open `src/utils/projectConstants.js`, find `NEWS_ITEMS`, and add a line **at the
 top** of the array (newest first):
@@ -63,7 +63,7 @@ When the list gets long, just delete old entries from the bottom of the array.
 
 ---
 
-## 3. Adding a blog post ✍️
+## 3. Adding a blog post 
 
 There are now TWO kinds of posts:
 
@@ -137,7 +137,7 @@ Two steps:
    existing detail pages as a template) and put its figures in
    `public/research/<slug>/`.
 
-## 5. Adding a fun project 🎮
+## 5. Adding a fun project 
 
 Add an entry to `PROJECTS` in `projectConstants.js`. If it's a standalone HTML
 app, drop the file in `public/projects/` and set the entry's `url` to
@@ -152,7 +152,7 @@ npm run dev       # local preview at http://localhost:4321, live-reloads
 npm run build     # production build (do this before deploying)
 ```
 
-## 7. One warning that will save you pain ⚠️
+## 7. One warning that will save you pain 
 
 When copying folders in **Finder, folders REPLACE rather than merge**. If you
 ever drag a new `pages/` folder into `src/`, anything inside the old `pages/`
