@@ -1,64 +1,96 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { RESEARCH_PROJECTS, createTagBadges } from '../utils/projectConstants.js';
+import { RESEARCH_PROJECTS, createTagBadges, createSlug } from '../utils/projectConstants.js';
 
-// Get all research projects dynamically
 const researchProjects = Object.values(RESEARCH_PROJECTS);
+
+// Every unique keyword across all research projects, for the filter sidebar
+const keywords = [...new Set(researchProjects.flatMap(p => p.tags))];
 ---
 
-<BaseLayout title="Research">
+<BaseLayout title="Research — Manon Bart">
     <div class="content-section">
-        <h2>Research</h2>
-        <p>This page is dedicated to my research interests. Here you will find specific projects in optical communication, optical computing and neural networks, and quantum information processing. Most of these projects leveragee machine learning in some fashion.</p>
-        
-        <div class="projects-scroll">
-            {researchProjects.map(project => (
-                <!-- Dynamic research projects from constants -->
-                <a href={`/research/${project.slug}`} class="project-item project-link">
-                    <!-- 🎮 Learning: Check if icon is image path or emoji -->
-                    {project.icon.startsWith('/') ? (
-                        <img src={project.icon} alt={project.name} class="project-icon-img" />
-                    ) : (
-                        <div class="project-icon">{project.icon}</div>
-                    )}
-                    <h3>{project.name}</h3>
-                    
-                    <!-- 🎮 Learning: Tags and description from constants -->
-                    <div class="project-tags" set:html={createTagBadges(project.tags)}></div>
-                    
-                    <p class="project-description">
-                        {project.description}
-                    </p>
-                </a>
-            ))}
+        <h2>research</h2>
+        <p class="page-intro">This page is dedicated to my research interests. Here you will find specific projects in optical communication, optical computing and neural networks, and quantum information processing. Most of these projects leverage machine learning in some fashion.</p>
 
-            <!-- Future research placeholder (only show if no projects) -->
-            {researchProjects.length === 0 && (
-                <div class="project-item">
-                    <div class="project-icon">🔬</div>
-                    <h3>Future Research</h3>
-                    <p class="project-description">
-                        Research projects will appear here!
-                    </p>
+        <div class="research-layout">
+            <!-- Keyword filter -->
+            <aside class="keyword-panel">
+                <span class="eyebrow">filter_by_keyword</span>
+                <div class="keyword-list" role="group" aria-label="Filter research by keyword">
+                    <button class="keyword-btn" data-keyword="all" aria-pressed="true">all</button>
+                    {keywords.map(keyword => (
+                        <button class="keyword-btn" data-keyword={createSlug(keyword)} aria-pressed="false">
+                            {keyword}
+                        </button>
+                    ))}
                 </div>
-            )}
+            </aside>
+
+            <!-- Research cards -->
+            <div>
+                <div class="projects-scroll" id="research-grid">
+                    {researchProjects.map(project => (
+                        <a href={`/research/${project.slug}`}
+                           class="project-item"
+                           data-tags={project.tags.map(createSlug).join(' ')}>
+                            {project.icon.startsWith('/') ? (
+                                <img src={project.icon} alt="" class="project-icon-img" />
+                            ) : (
+                                <div class="project-icon">{project.icon}</div>
+                            )}
+                            <h3>{project.name}</h3>
+                            <div class="project-tags" set:html={createTagBadges(project.tags)}></div>
+                            <p class="project-description">{project.description}</p>
+                            <span class="read-more">read_more →</span>
+                        </a>
+                    ))}
+                </div>
+                <p class="no-results" id="no-results" hidden>no_results_for_this_keyword :(</p>
+            </div>
         </div>
     </div>
+
+    <script>
+        const buttons = document.querySelectorAll('.keyword-btn');
+        const cards = document.querySelectorAll('#research-grid .project-item');
+        const noResults = document.getElementById('no-results');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const keyword = button.dataset.keyword;
+
+                // One active keyword at a time
+                buttons.forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+
+                let visible = 0;
+                cards.forEach(card => {
+                    const tags = (card.dataset.tags || '').split(' ');
+                    const show = keyword === 'all' || tags.includes(keyword);
+                    card.hidden = !show;
+                    if (show) visible++;
+                });
+
+                if (noResults) noResults.hidden = visible > 0;
+            });
+        });
+    </script>
 </BaseLayout>
 
 <style>
-    .project-tags {
-        margin: 0.5rem 0;
-        text-align: center;
+    .page-intro {
+        max-width: 46rem;
+        color: var(--ink-soft);
     }
-    
-    /* 🎮 Learning: Styling for custom project icon images */
-    .project-icon-img {
-        width: 60px;
-        height: 60px;
-        object-fit: cover;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-        /* Removed border for cleaner look */
+
+    .read-more {
+        display: inline-block;
+        margin-top: 0.9rem;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: var(--moss);
     }
+
+    .project-item:hover .read-more { color: var(--moss-deep); }
 </style>

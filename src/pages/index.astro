@@ -1,91 +1,154 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { PROJECTS, RESEARCH_PROJECTS } from '../utils/projectConstants.js';
+import { RESEARCH_PROJECTS, NEWS_ITEMS, BLOG_POSTS, createTagBadges } from '../utils/projectConstants.js';
 
-// Get recent items (for now just get all items, but you could sort by date later)
-const recentProjects = Object.values(PROJECTS).slice(-3); // Last 3 projects
-const recentResearch = Object.values(RESEARCH_PROJECTS).slice(-3); // Last 3 research
+const recentResearch = Object.values(RESEARCH_PROJECTS).slice(-3).reverse();
+
+// Recent posts merge both sources: markdown files in ./blog/ and BLOG_POSTS
+const mdModules: any[] = Object.values(import.meta.glob('./blog/*.md', { eager: true }));
+const allPosts = [
+    ...mdModules.map(mod => ({
+        title: mod.frontmatter.title,
+        date: mod.frontmatter.date,
+        intro: mod.frontmatter.description,
+        href: mod.url,
+    })),
+    ...BLOG_POSTS.map(post => ({
+        title: post.title,
+        date: post.date,
+        intro: post.paragraphs[0],
+        href: `/blog/${post.slug}`,
+    })),
+].sort((a, b) => b.date.localeCompare(a.date));
+const recentPosts = allPosts.slice(0, 3);
+
+const recentNews = NEWS_ITEMS; // the sidebar is the only news surface — shows the whole list
 ---
 
-<BaseLayout title="Home - My Portfolio">
-    <!-- Retro screen -->
-    <div class="retro-screen">
-        <div class="terminal-text">
-            <h1>Hello World<span class="cursor"></span></h1>
-            <p id="typing-text"></p>
-        </div>
+<BaseLayout title="Manon Bart — Physics, Optics & Machine Learning">
+    <!-- Hero: terminal copy on the left, optical bench on the right -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-copy terminal-text">
+                <span class="eyebrow">physicist · optics · machine learning · archaeometry</span>
+                <h1>Hello World<span class="cursor" aria-hidden="true"></span></h1>
+                <p id="typing-text">Welcome to Manon's personal webpage, where you can stay up to date with fun projects and research!</p>
+                <div class="btn-row">
+                    <a href="/research" class="btn btn-primary">view_research</a>
+                    <a href="/about" class="btn btn-ghost">about_me</a>
+                </div>
+            </div>
 
-        <script>
-            // Typing effect - runs when page loads
-            const text = "Welcome to Manon's personal webpage, where you can stay up to date with fun projects and research!";
-            const typingElement = document.getElementById('typing-text');
+            <!-- Signature illustration: light through cascaded phase masks
+                 into a detector — a diffractive optical neural network -->
+            <svg class="hero-bench" viewBox="0 0 520 300" role="img"
+                 aria-label="Diagram of a beam of light passing through cascaded phase masks onto a detector"
+                 xmlns="http://www.w3.org/2000/svg">
+                <circle cx="48" cy="150" r="26" fill="var(--sky)" stroke="var(--line)"/>
+                <circle cx="48" cy="150" r="12" fill="var(--moss)" opacity="0.35"/>
+                <circle cx="48" cy="150" r="5" fill="var(--moss)"/>
+
+                <line class="beam-anim" x1="74" y1="150" x2="392" y2="150"
+                      stroke="var(--hene)" stroke-width="2.5" stroke-linecap="round"/>
+
+                {[150, 240, 330].map(x => (
+                    <g>
+                        <rect x={x} y="82" width="16" height="136" rx="4"
+                              fill="var(--panel)" stroke="var(--moss)" stroke-width="1.5"/>
+                        {[96, 112, 128, 144, 160, 176, 192].map(y => (
+                            <line x1={x + 3.5} y1={y} x2={x + 12.5} y2={y}
+                                  stroke="var(--moss)" stroke-width="2" opacity={((y / 16) % 2 === 0) ? 0.55 : 0.25}/>
+                        ))}
+                    </g>
+                ))}
+
+                <line class="beam-anim" x1="392" y1="150" x2="446" y2="112" stroke="var(--hene)" stroke-width="1.8" opacity="0.55"/>
+                <line class="beam-anim" x1="392" y1="150" x2="446" y2="150" stroke="var(--hene)" stroke-width="1.8"/>
+                <line class="beam-anim" x1="392" y1="150" x2="446" y2="188" stroke="var(--hene)" stroke-width="1.8" opacity="0.55"/>
+
+                <g>
+                    <rect x="446" y="94" width="54" height="112" rx="6" fill="#fff" stroke="var(--moss)" stroke-width="1.5"/>
+                    {[102, 138, 174].map((y) => (
+                        [454, 476].map((x) => (
+                            <rect x={x} y={y} width="16" height="24" rx="3"
+                                  fill={(x === 454 && y === 138) ? 'var(--hene)' : 'var(--panel)'}
+                                  stroke="var(--line)"/>
+                        ))
+                    ))}
+                </g>
+
+                <text x="48" y="205" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-soft)">input</text>
+                <text x="248" y="248" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-soft)">phase_masks</text>
+                <text x="473" y="232" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-soft)">detector</text>
+            </svg>
+        </div>
+    </section>
+
+    <script>
+        // Typing effect — skipped for users who prefer reduced motion
+        const typingElement = document.getElementById('typing-text');
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (typingElement && !reduceMotion) {
+            const el: HTMLElement = typingElement; // non-null from here on
+            const text = el.textContent ?? '';
+            el.textContent = '';
             let index = 0;
 
-            function typeWriter() {
-                if (typingElement && index < text.length) {
-                    // Add one character at a time
-                    typingElement.textContent += text.charAt(index);
+            const typeWriter = () => {
+                if (index < text.length) {
+                    el.textContent += text.charAt(index);
                     index++;
-                    // setTimeout controls typing speed (100ms between letters)
-                    setTimeout(typeWriter, 80);
+                    setTimeout(typeWriter, 35);
                 }
-            }
+            };
+            setTimeout(typeWriter, 400);
+        }
+    </script>
 
-            // Start typing after a short delay
-            if (typingElement) {
-                setTimeout(typeWriter, 500);
-            }
-        </script>
-    </div>
+    <!-- Main lists + news sidebar -->
+    <div class="home-columns">
+        <div class="home-main">
+            <h2>recent_research</h2>
+            <ul class="entry-list">
+                {recentResearch.map(research => (
+                    <li class="entry">
+                        <a href={`/research/${research.slug}`}>
+                            <h3>{research.name} <span class="entry-arrow">→</span></h3>
+                            <div class="project-tags" set:html={createTagBadges(research.tags)}></div>
+                        </a>
+                    </li>
+                ))}
+            </ul>
 
-    <!-- Recent Projects - now dynamic! -->
-    <h2>recent_projects</h2>
-    
-    <div class="projects-scroll">
-        {recentProjects.map(project => (
-            <!-- 🎮 Learning: This checks if project has a URL vs needs to go to projects page -->
-            <a href={project.url || '/projects'} class="project-item">
-                <!-- 🎮 Learning: Check if icon is image path or emoji -->
-                {project.icon.startsWith('/') ? (
-                    <img src={project.icon} alt={project.name} class="project-icon-img" />
-                ) : (
-                    <div class="project-icon">{project.icon}</div>
-                )}
-                <h3>{project.name}</h3>
-            </a>
-        ))}
-        
-        <!-- 🎮 Learning: If no projects yet, show placeholder -->
-        {recentProjects.length === 0 && (
-            <div class="project-item">
-                <div class="project-icon">📦</div>
-                <h3>No projects yet</h3>
-            </div>
-        )}
-    </div>
+            <h2>recent_posts</h2>
+            <ul class="entry-list">
+                {recentPosts.map(post => (
+                    <li class="entry">
+                        <a href={post.href}>
+                            <span class="entry-meta">{post.date}</span>
+                            <h3>{post.title} <span class="entry-arrow">→</span></h3>
+                            <p>{post.intro}</p>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </div>
 
-    <!-- Recent Research - now dynamic! -->
-    <h2>recent_research</h2>
-    <div class="projects-scroll">
-        {recentResearch.map(research => (
-            <!-- 🎮 Learning: Use the slug field for consistent URLs -->
-            <a href={`/research/${research.slug}`} class="project-item">
-                <!-- 🎮 Learning: Check if icon is image path or emoji -->
-                {research.icon.startsWith('/') ? (
-                    <img src={research.icon} alt={research.name} class="project-icon-img" />
-                ) : (
-                    <div class="project-icon">{research.icon}</div>
-                )}
-                <h3>{research.name}</h3>
-            </a>
-        ))}
-        
-        <!-- 🎮 Learning: If no research yet, show placeholder -->
-        {recentResearch.length === 0 && (
-            <div class="project-item">
-                <div class="project-icon">🔬</div>
-                <h3>No research yet</h3>
-            </div>
-        )}
+        <aside class="side-news">
+            <h2>news</h2>
+            <ul class="news-list">
+                {recentNews.map(item => (
+                    <li class="news-item">
+                        <span class="entry-meta">{item.date}</span>
+                        {item.url ? (
+                            <a href={item.url} target="_blank" rel="noopener" set:html={item.text} />
+                        ) : (
+                            <span set:html={item.text} />
+                        )}
+                    </li>
+                ))}
+            </ul>
+        </aside>
     </div>
 </BaseLayout>

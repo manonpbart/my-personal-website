@@ -1,0 +1,68 @@
+---
+// Layout for markdown blog posts (src/pages/blog/*.md)
+import BaseLayout from './BaseLayout.astro';
+
+const { frontmatter } = Astro.props;
+---
+
+<BaseLayout title={`${frontmatter.title} — Manon Bart`}>
+    <!-- KaTeX styles for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+
+    <div class="content-section">
+        <div class="back-nav">
+            <a href="/blog" class="back-link">← back_to_blog</a>
+        </div>
+
+        <article class="post post-md">
+            <span class="entry-meta">{frontmatter.date}</span>
+            <h1>{frontmatter.title}</h1>
+            <slot />
+        </article>
+    </div>
+</BaseLayout>
+
+<style is:global>
+    .back-nav { margin-bottom: 2rem; }
+
+    .back-link {
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--moss);
+        text-decoration: none;
+    }
+
+    .back-link:hover { color: var(--moss-deep); }
+
+    .post-md { max-width: 46rem; }
+
+    .post-md h1 {
+        font-size: clamp(1.8rem, 4vw, 2.4rem);
+        font-weight: 700;
+        margin: 0.4rem 0 1.5rem;
+    }
+
+    /* Section headers inside markdown posts get the "> " prompt too */
+    .post-md h2 {
+        max-width: none;
+        margin: 2.5rem 0 1rem;
+        padding: 0;
+        font-size: 1.35rem;
+    }
+
+    .post-md p {
+        margin-bottom: 1.25rem;
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+
+    .post-md a { color: var(--moss); }
+
+    /* Display equations: scroll on small screens instead of overflowing */
+    .post-md .katex-display {
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0.25rem 0;
+    }
+</style>

@@ -16,9 +16,6 @@
 
 img { max-width: 100%; display: block; }
 
-/* The hidden attribute must always win (used by the research keyword filter) */
-[hidden] { display: none !important; }
-
 /* ---- Tokens ---- */
 :root {
     /* New palette */

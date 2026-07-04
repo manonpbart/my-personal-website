@@ -3,10 +3,22 @@ interface Props {
     title?: string;
 }
 
-const { title = "Manon's Portfolio" } = Astro.props;
+const { title = "Manon Bart — Physics, Optics & Machine Learning" } = Astro.props;
 
-// Import CSS the Astro way - this gets processed during build
 import '../styles/global.css';
+
+// Nav links in one place; aria-current highlights the active page
+const links = [
+    { href: '/', label: 'home' },
+    { href: '/about', label: 'about' },
+    { href: '/research', label: 'research' },
+    { href: '/projects', label: 'projects' },
+    { href: '/blog', label: 'blog' },
+];
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) =>
+    href === '/' ? currentPath === '/' : currentPath.startsWith(href);
 ---
 
 <!DOCTYPE html>
@@ -14,18 +26,31 @@ import '../styles/global.css';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manon Bart — theoretical physicist working on optical communication, optical computing and machine learning. Research, projects and more.">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <title>{title}</title>
+
+    <!-- Fonts: Space Grotesk (display), Instrument Sans (body), IBM Plex Mono (terminal accents) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav>
-        <ul>
-            <li><a href="/">home</a></li>
-            <li><a href="/about">about</a></li>
-            <li><a href="/research">research</a></li>
-            <li><a href="/projects">projects</a></li>
-            <li><a href="/puzzle">puzzle</a></li>
-            <li><a href="/game">game</a></li>
-        </ul>
+        <div class="nav-inner">
+            <a href="/" class="nav-brand">
+                <span class="prompt-user">manon</span>@world:~$<span class="cursor" aria-hidden="true"></span>
+            </a>
+            <ul>
+                {links.map(link => (
+                    <li>
+                        <a href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
+                            {link.label}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </div>
     </nav>
 
     <slot />
@@ -33,10 +58,17 @@ import '../styles/global.css';
     <footer>
         <h2>get_in_touch</h2>
         <div class="social-icons">
-            <a href="https://linkedin.com/in/manonpb" title="LinkedIn">💼</a>
-            <a href="https://github.com/manonpbart" title="GitHub">🐙</a>
-            <a href="mailto:manon.bart.p@gmail.com" title="Email">📧</a>
+            <a href="https://linkedin.com/in/manonpb" title="LinkedIn" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+            </a>
+            <a href="https://github.com/manonpbart" title="GitHub" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.17c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.53-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.16 1.18a11 11 0 0 1 5.76 0c2.19-1.49 3.15-1.18 3.15-1.18.63 1.59.24 2.76.12 3.05.74.8 1.19 1.83 1.19 3.09 0 4.43-2.7 5.4-5.27 5.68.41.36.78 1.06.78 2.14v3.17c0 .3.2.66.8.55A11.52 11.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+            </a>
+            <a href="mailto:manon.bart.p@gmail.com" title="Email" aria-label="Email">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5.5A2.5 2.5 0 0 1 4.5 3h15A2.5 2.5 0 0 1 22 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 18.5v-13zm2.6-.5 7.4 6.17L19.4 5H4.6zm15.4 1.87-7.04 5.87a1.5 1.5 0 0 1-1.92 0L4 6.87V18.5c0 .28.22.5.5.5h15a.5.5 0 0 0 .5-.5V6.87z"/></svg>
+            </a>
         </div>
+        <p class="footer-note">λ = 632.8 nm · made in Paris</p>
     </footer>
 
     <script>
@@ -47,9 +79,7 @@ import '../styles/global.css';
                     e.preventDefault();
                     const target = document.querySelector(href);
                     if (target) {
-                        target.scrollIntoView({ 
-                            behavior: 'smooth' 
-                        });
+                        target.scrollIntoView({ behavior: 'smooth' });
                     }
                 }
             });

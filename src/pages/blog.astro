@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { BLOG_POSTS } from '../utils/projectConstants.js';
+
+// Posts come from two places:
+// 1. Markdown files in src/pages/blog/*.md  (long posts, supports math & headers)
+// 2. BLOG_POSTS in projectConstants.js      (quick text-only posts)
+const mdModules: any[] = Object.values(import.meta.glob('./blog/*.md', { eager: true }));
+
+const mdPosts = mdModules.map(mod => ({
+    title: mod.frontmatter.title,
+    date: mod.frontmatter.date,
+    intro: mod.frontmatter.description,
+    href: mod.url,
+}));
+
+const constantPosts = BLOG_POSTS.map(post => ({
+    title: post.title,
+    date: post.date,
+    intro: post.paragraphs[0],
+    href: `/blog/${post.slug}`,
+}));
+
+// Newest first ("YYYY-MM" strings sort correctly)
+const posts = [...mdPosts, ...constantPosts].sort((a, b) => b.date.localeCompare(a.date));
+---
+
+<BaseLayout title="Blog — Manon Bart">
+    <div class="content-section">
+        <h2>blog</h2>
+        <p class="page-intro">Short, informal notes on research, projects, and life abroad. Newest first.</p>
+
+        <ul class="entry-list posts-index">
+            {posts.map(post => (
+                <li class="entry">
+                    <a href={post.href}>
+                        <span class="entry-meta">{post.date}</span>
+                        <h3>{post.title} <span class="entry-arrow">→</span></h3>
+                        <p>{post.intro}</p>
+                        <span class="read-more">read_more →</span>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </div>
+</BaseLayout>
+
+<style>
+    .page-intro {
+        max-width: 46rem;
+        color: var(--ink-soft);
+    }
+
+    .posts-index { max-width: 46rem; margin-top: 1rem; }
+
+    .read-more {
+        display: inline-block;
+        margin-top: 0.6rem;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: var(--moss);
+    }
+
+    .entry a:hover .read-more { color: var(--moss-deep); }
+</style>
