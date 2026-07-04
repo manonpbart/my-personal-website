@@ -209,10 +209,10 @@ export const BLOG_POSTS = [
         slug: "why-optical-neural-networks",
         date: "2026-05",
         paragraphs: [
-            "Light is a wonderful computer. When a beam passes through a phase mask, it performs a transformation on the whole optical field at once — massively parallel, and essentially free in energy once the mask exists.",
+            "Light is a wonderful computer. When a beam passes through a phase mask, it performs a transformation on the whole optical field at once, massively parallel, and essentially free in energy once the mask exists.",
             "Compare that with a GPU: every multiply-accumulate costs energy and time, and moving the data around often costs more than the arithmetic itself. An optical system does its linear algebra as the field propagates.",
             "My recent work uses a Fourier-decomposition trick: because free-space propagation is diagonal in the angular spectrum basis, the gradients have a natural, efficient form there.",
-            "I'll write a follow-up post walking through the math with pictures. For the impatient, the preprint and code are linked on the research page."
+            "I'll write a more detailed post later."
         ]
     },
     {
@@ -222,7 +222,6 @@ export const BLOG_POSTS = [
         paragraphs: [
             "Welcome to the blog! After finishing my PhD at Tulane, I moved to Paris and have been splitting my time between personal research projects and exploring the city.",
             "This space is for short, informal posts: things I'm learning, projects in progress, and the occasional detour into math, art, or travel.",
-            "A bit about how I got here: I grew up in Louisiana, studied chemical engineering and physics at LSU, then did my doctorate in theoretical physics at Tulane, working on classical and quantum optical communication and computing.",
             "If anything here resonates, my inbox and LinkedIn are always open. Thanks for reading!"
         ]
     }
