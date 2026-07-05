@@ -101,8 +101,8 @@ export const NEWS_ITEMS = [
     },
     {
         date: "2026-04",
-        text: "The PHOENIX Project — AI for cultural heritage conservation — is featured in Omalius Magazine, issue 37.",
-        url: "https://www.unamur.be/en/university/today/omalius"
+        text: "The PHOENIX Project — AI for cultural heritage conservation — is featured in Omalius Magazine.",
+        url: "https://www.unamur.be/fr/newsroom/phoenix-sciences-du-patrimoine?fbclid=IwY2xjawS3cktleHRuA2FlbQIxMABzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEeiLGO9Rb5SCafAlUW4I3posdAXtjRiNFGSgVwpEvuzaG-1nSKlxHxwuIYRDc_aem_W6CWz7ehEU9D3SZVLNe7xQ"
     },
     {
         date: "2026-03",
